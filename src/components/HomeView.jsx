@@ -299,7 +299,7 @@ export default function HomeView() {
           {[
             { icon: '⚽', title: 'Builder dual IP/OOP', desc: 'Fixed positions with smart snap. Each piece locks to its zone and shows FM26 roles. Drag to change position.' },
             { icon: '⚙', title: 'Team Instructions FM26', desc: '8 complete IP/OOP panels with all official TIs. Overlap/Underlap mutually exclusive per side.' },
-            { icon: '★', title: 'Analyse 7 dimensions', desc: 'Defence, midfield, attack, IP coherence, OOP solidity, synergies, profile fit. Based on official FM26 data.'' },
+            { icon: '★', title: 'Analyse 7 dimensions', desc: 'Defence, midfield, attack, IP coherence, OOP solidity, synergies, profile fit. Based on official FM26 data.' },
           ].map((f, i) => (
             <div key={i} style={{ background: 'rgba(255,255,255,0.03)', border: '0.5px solid rgba(255,255,255,0.07)', borderRadius: 10, padding: '16px 18px' }}>
               <div style={{ fontSize: 18, marginBottom: 8 }}>{f.icon}</div>
