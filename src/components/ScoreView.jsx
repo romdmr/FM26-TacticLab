@@ -11,13 +11,13 @@ import {
 } from '../engine/partnerships'
 
 const DIM_META = {
-  defense:   { label: 'Bloc défensif',        color: '#9B59B6', desc: 'CBs, couverture latérale, GK' },
-  midfield:  { label: 'Milieu de terrain',    color: '#E67E22', desc: 'Écran DM, densité, B2B, Half Back' },
-  attack:    { label: 'Puissance offensive',  color: '#FF6619', desc: 'ST, finition, création, style' },
-  ip:        { label: 'Cohérence IP',         color: '#26E676', desc: 'Rôles offensifs, style, TI' },
-  oop:       { label: 'Solidité OOP',         color: '#378ADD', desc: 'Bloc, ligne, pressing, WB' },
-  synergies: { label: 'Synergies de rôles',   color: '#C2185B', desc: 'Paires complémentaires, conflits' },
-  profile:   { label: 'Adéquation profil',    color: '#F1C40F', desc: 'Style vs niveau d\'équipe, complexité' },
+  defense:   { label: 'Defensive Block',        color: '#9B59B6', desc: 'CBs, wide coverage, GK' },
+  midfield:  { label: 'Midfield',    color: '#E67E22', desc: 'DM screen, density, B2B, Half Back' },
+  attack:    { label: 'Offensive Power',  color: '#FF6619', desc: 'ST, finishing, creation, style' },
+  ip:        { label: 'IP Coherence',         color: '#26E676', desc: 'Offensive roles, style, TI' },
+  oop:       { label: 'OOP Solidity',         color: '#378ADD', desc: 'Block, line, pressing, WB' },
+  synergies: { label: 'Role Synergies',   color: '#C2185B', desc: 'Complementary pairs, conflicts' },
+  profile:   { label: 'Profile Fit',    color: '#F1C40F', desc: 'Style vs team level, complexity' },
 }
 
 // ── Score ring ──────────────────────────────────────────────────────────
@@ -158,7 +158,7 @@ function PartnershipsTab({ pionsIP, pionsOOP }) {
     byRisk[k] = (byRisk[k] || 0) + 1
   })
 
-  const ZONE_LABELS = { left: 'Flanc gauche', central: 'Milieu central', right: 'Flanc droit', defense: 'Défense', attack: 'Attaque' }
+  const ZONE_LABELS = { left: 'Left Flank', central: 'Central Midfield', right: 'Right Flank', defense: 'Defence', attack: 'Attack' }
 
   return (
     <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap:14 }}>
@@ -169,21 +169,21 @@ function PartnershipsTab({ pionsIP, pionsOOP }) {
           <div style={{ fontSize:13, fontWeight:600, marginBottom:4 }}>Scores de mouvement offensif</div>
           <div style={{ fontSize:10, color:'rgba(255,255,255,0.35)', marginBottom:14 }}>Analyse IP — par zone du terrain</div>
           {[
-            { label:'Pénétration — Gauche', val:fwdScores.left.penetration },
-            { label:'Pénétration — Centre', val:fwdScores.central.penetration },
-            { label:'Pénétration — Droite', val:fwdScores.right.penetration },
+            { label:'Penetration — Left', val:fwdScores.left.penetration },
+            { label:'Penetration — Centre', val:fwdScores.central.penetration },
+            { label:'Penetration — Right', val:fwdScores.right.penetration },
           ].map(s => <ZoneScoreBar key={s.label} label={s.label} value={s.val} color='#FF6619'/>)}
           <div style={{ height:'0.5px', background:'rgba(255,255,255,0.07)', margin:'10px 0' }}/>
           {[
-            { label:'Support — Gauche', val:fwdScores.left.support },
+            { label:'Support — Left', val:fwdScores.left.support },
             { label:'Support — Centre', val:fwdScores.central.support },
-            { label:'Support — Droite', val:fwdScores.right.support },
+            { label:'Support — Right', val:fwdScores.right.support },
           ].map(s => <ZoneScoreBar key={s.label} label={s.label} value={s.val} color='#378ADD'/>)}
           <div style={{ height:'0.5px', background:'rgba(255,255,255,0.07)', margin:'10px 0' }}/>
           {[
-            { label:'Solidité — Gauche', val:fwdScores.left.solidity },
-            { label:'Solidité — Centre', val:fwdScores.central.solidity },
-            { label:'Solidité — Droite', val:fwdScores.right.solidity },
+            { label:'Solidity — Left', val:fwdScores.left.solidity },
+            { label:'Solidity — Centre', val:fwdScores.central.solidity },
+            { label:'Solidity — Right', val:fwdScores.right.solidity },
           ].map(s => <ZoneScoreBar key={s.label} label={s.label} value={s.val} color='#9B59B6'/>)}
         </div>
 
@@ -355,9 +355,9 @@ export default function ScoreView() {
   const styleCompat = getStyleCompatibility(teamProfile, style)
 
   const tabs = [
-    { id:'analysis',     label:'Analyse',        icon:'★' },
+    { id:'analysis',     label:'Analysis',        icon:'★' },
     { id:'partnerships', label:'Partnerships',   icon:'🔗' },
-    { id:'strengths',    label:'Points forts',   icon:'✓' },
+    { id:'strengths',    label:'Strengths',   icon:'✓' },
   ]
 
   return (
@@ -387,7 +387,7 @@ export default function ScoreView() {
           ))}
         </div>
         <div style={{ marginLeft:'auto', fontSize:11, color:'rgba(255,255,255,0.35)' }}>
-          {result.allIssues.length} problème(s) · {result.allStrengths.length} point(s) fort(s)
+          {result.allIssues.length} issue(s) · {result.allStrengths.length} strength(s)
         </div>
       </div>
 

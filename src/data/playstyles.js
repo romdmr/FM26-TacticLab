@@ -1,15 +1,15 @@
 /**
- * FM26 — Styles de jeu officiels
- * Source: captures d'écran FM26 in-game
- * Chaque style a : description, staff feedback +/-, TI IP par défaut, TI OOP par défaut
+ * FM26 — Official Playing Styles
+ * Source: FM26 in-game screenshots
+ * Each style has: description, staff feedback +/-, default IP TI, default OOP TI
  */
 export const PLAY_STYLES = {
   'Control Possession': {
     label: 'Control Possession',
-    description: 'Se concentre sur la conservation du ballon et la récupération rapide. Joue depuis la défense et crée des occasions par une construction patiente en passes courtes.',
+    description: 'Focuses on retaining the ball and winning it back quickly. Plays out from defence and creates chances through patient build-up with short passes.',
     feedback: {
-      pos: ['Conserve le ballon.', 'Joue sur l\'avant du pied.'],
-      neg: ['Sortie de défense risquée.', 'Tempo plus lent vers l\'attaque.'],
+      pos: ['Retains the ball well.', 'Plays on the front foot.'],
+      neg: ['Risky build-up from defence.', 'Slower tempo in transition to attack.'],
     },
     tiIP: {
       passingDirectness: 'Shorter', tempo: 'Lower', buildupStrategy: 'Play Through Press',
@@ -24,10 +24,10 @@ export const PLAY_STYLES = {
 
   'Gegenpress': {
     label: 'Gegenpress',
-    description: 'S\'appuie sur un travail intense de tous les joueurs. Condition physique et mobilité sont primordiales pour presser immédiatement après avoir perdu le ballon.',
+    description: 'Relies on intense work from all players. Fitness and mobility are paramount to press immediately after losing the ball.',
     feedback: {
-      pos: ['Récupère le ballon haut sur le terrain.', 'L\'intensité haute peut déstabiliser l\'adversaire.'],
-      neg: ['Très éprouvant pour les joueurs.', 'Approche axée sur les turnovers = moins de contrôle.'],
+      pos: ['Wins the ball high up the pitch.', 'High intensity can unsettle the opposition.'],
+      neg: ['Very demanding on players.', 'Turnover-based approach means less control.'],
     },
     tiIP: {
       passingDirectness: 'Standard', tempo: 'Much Higher', buildupStrategy: 'Play Through Press',
@@ -43,10 +43,10 @@ export const PLAY_STYLES = {
 
   'Tiki-Taka': {
     label: 'Tiki-Taka',
-    description: 'Domine le match par une combinaison de pressing intense et d\'une approche offensive très patiente en passes courtes. Variante plus extrême du Control Possession.',
+    description: 'Dominates the match through a combination of intense pressing and a very patient short-passing offensive approach. A more extreme variant of Control Possession.',
     feedback: {
-      pos: ['Domine la possession.', 'Récupère le ballon haut.'],
-      neg: ['Tempo plus lent vers l\'attaque.', 'Requiert un très haut niveau technique.'],
+      pos: ['Dominates possession.', 'Wins the ball high up.'],
+      neg: ['Slower tempo in transition to attack.', 'Requires very high technical quality.'],
     },
     tiIP: {
       passingDirectness: 'Much Shorter', passReception: 'Pass to Feet',
@@ -63,10 +63,10 @@ export const PLAY_STYLES = {
 
   'Vertical Tiki-Taka': {
     label: 'Vertical Tiki-Taka',
-    description: 'Domine le match par pressing intense et passes courtes. Joue étroit en attaque, créant des triangles et des jeux de combinaison fluides dans des espaces restreints.',
+    description: 'Dominates the match through intense pressing and short passes. Plays narrow in attack, creating triangles and fluid combination play in tight spaces.',
     feedback: {
-      pos: ['Conserve la possession.', 'Plus de jeux de combinaison.'],
-      neg: ['Le jeu offensif peut se congestionner dans des espaces serrés.', 'Requiert un très haut niveau technique.'],
+      pos: ['Retains possession.', 'More combination play.'],
+      neg: ['Offensive play can get congested in tight spaces.', 'Requires very high technical quality.'],
     },
     tiIP: {
       passingDirectness: 'Shorter', buildupStrategy: 'Play Through Press',
@@ -83,10 +83,10 @@ export const PLAY_STYLES = {
 
   'Wing Play': {
     label: 'Wing Play',
-    description: 'Cherche à se créer des positions de centre en haute qualité. Les joueurs font des chevauchements réguliers pour surcharger les flancs en attaque.',
+    description: 'Looks to create high-quality crossing positions. Players make regular overlapping runs to overload the flanks in attack.',
     feedback: {
-      pos: ['Évite de jouer dans des zones centrales congestionnées.', 'Les centres peuvent être une source fiable d\'occasions.'],
-      neg: ['Plus de pertes de balle en attaque.', 'Moins efficace contre les défenses fortes dans les airs.'],
+      pos: ['Avoids congested central zones.', 'Crosses can be a reliable source of chances.'],
+      neg: ['More turnovers in attack.', 'Less effective against strong aerial defences.'],
     },
     tiIP: {
       passingDirectness: 'More Direct', progressThrough: 'Both Flanks',
@@ -101,10 +101,10 @@ export const PLAY_STYLES = {
 
   'Route One': {
     label: 'Route One',
-    description: 'Cherche à envoyer le ballon en zone adverse le plus rapidement possible. Évite les risques dans sa propre moitié en jouant des passes longues vers les attaquants.',
+    description: 'Looks to send the ball into the opposition half as quickly as possible. Avoids risk in own half by playing long balls to attackers.',
     feedback: {
-      pos: ['Moins de pertes de balle près de son propre but.', 'Met une pression immédiate sur la défense adverse.'],
-      neg: ['Moins de possession.', 'Dépend de la supériorité physique en attaque.'],
+      pos: ['Fewer turnovers near own goal.', 'Puts immediate pressure on the opposition defence.'],
+      neg: ['Less possession.', 'Relies on physical superiority in attack.'],
     },
     tiIP: {
       passingDirectness: 'Much More Direct', buildupStrategy: 'Bypass Press',
@@ -121,10 +121,10 @@ export const PLAY_STYLES = {
 
   'Fluid Counter-Attack': {
     label: 'Fluid Counter-Attack',
-    description: 'Attire l\'adversaire pour le laisser vulnérable sur le break. Les joueurs seront expressifs sur le contre, cherchant à combiner et jouer à travers l\'adversaire.',
+    description: 'Draws the opposition in to leave them vulnerable on the break. Players are expressive on the counter, looking to combine and play through the opposition.',
     feedback: {
-      pos: ['Attire l\'opposition.', 'Imprévisible sur le contre.'],
-      neg: ['Moins efficace contre les adversaires défensifs.', 'Moins de possession.'],
+      pos: ['Draws the opposition in.', 'Unpredictable on the counter.'],
+      neg: ['Less effective against defensive opponents.', 'Less possession.'],
     },
     tiIP: {
       passingDirectness: 'Shorter', passReception: 'Pass Into Space',
@@ -140,10 +140,10 @@ export const PLAY_STYLES = {
 
   'Direct Counter-Attack': {
     label: 'Direct Counter-Attack',
-    description: 'Attire l\'adversaire pour le laisser vulnérable sur le break. Les joueurs envoient le ballon vers l\'avant le plus rapidement possible pour créer des occasions.',
+    description: 'Draws the opposition in to leave them vulnerable on the break. Players move the ball forward as quickly as possible to create chances.',
     feedback: {
-      pos: ['Attire l\'opposition.', 'Attaque avec vitesse et directness.'],
-      neg: ['Moins efficace contre les adversaires défensifs.', 'Moins de possession.'],
+      pos: ['Draws the opposition in.', 'Attacks with pace and directness.'],
+      neg: ['Less effective against defensive opponents.', 'Less possession.'],
     },
     tiIP: {
       passingDirectness: 'More Direct', passReception: 'Pass Into Space',
@@ -159,10 +159,10 @@ export const PLAY_STYLES = {
 
   'Catenaccio': {
     label: 'Catenaccio',
-    description: 'Style axé sur la défense visant à priver l\'adversaire d\'occasions. Utilise traditionnellement 3 CBs pour une couverture et une stabilité accrues en défense.',
+    description: 'A defence-focused style aimed at denying the opposition goalscoring opportunities. Traditionally uses 3 CBs for increased coverage and stability in defence.',
     feedback: {
-      pos: ['Minimise l\'espace offensif pour l\'adversaire.', 'Moins vulnérable aux contre-attaques.'],
-      neg: ['Crée moins d\'occasions offensives.', 'Beaucoup moins de possession.'],
+      pos: ['Minimises offensive space for the opposition.', 'Less vulnerable to counter-attacks.'],
+      neg: ['Creates fewer offensive chances.', 'Much less possession.'],
     },
     tiIP: {
       passingDirectness: 'More Direct', buildupStrategy: 'Bypass Press',
@@ -179,10 +179,10 @@ export const PLAY_STYLES = {
 
   'Park the Bus': {
     label: 'Park the Bus',
-    description: 'Approche défense-d\'abord cherchant à restreindre les occasions adverses. Cède la possession et exploite les contre-attaques et coups de pied arrêtés.',
+    description: 'A defence-first approach looking to restrict opposition chances. Concedes possession and looks to exploit counter-attacks and set pieces.',
     feedback: {
-      pos: ['Minimise l\'espace offensif pour l\'adversaire.', 'Moins vulnérable aux contre-attaques.'],
-      neg: ['Crée moins d\'occasions offensives.', 'Beaucoup moins de possession.'],
+      pos: ['Minimises offensive space for the opposition.', 'Less vulnerable to counter-attacks.'],
+      neg: ['Creates fewer offensive chances.', 'Much less possession.'],
     },
     tiIP: {
       passingDirectness: 'More Direct', passReception: 'Pass Into Space',

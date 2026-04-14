@@ -112,7 +112,7 @@ export default function Sidebar() {
       <Sep />
 
       {/* Légende */}
-      <Sec c="Légende" />
+      <Sec c="Legend" />
       <div style={{ padding: '4px 10px', display: 'flex', flexWrap: 'wrap', gap: 4 }}>
         {Object.entries(POS_TYPES).map(([key, c]) => (
           <div key={key} style={{ display: 'flex', alignItems: 'center', gap: 3, fontSize: 9, color: 'rgba(255,255,255,0.4)' }}>

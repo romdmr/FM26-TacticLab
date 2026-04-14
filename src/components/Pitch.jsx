@@ -87,8 +87,16 @@ function Pion({ pion, idx, side, isSelected, canvasRef, onDragStart, onDragMove,
   const c           = POS_TYPES[pion.t]
   const dragRef     = useRef({ dragging:false, moved:false })
 
+  // GK est locké — ne peut pas être déplacé
+  const isGK = pion.t === 'GK'
+
   const onMouseDown = useCallback(e => {
     e.preventDefault(); e.stopPropagation()
+    if (isGK) {
+      // Clic simple = sélection uniquement, pas de drag
+      selectPion(side, idx)
+      return
+    }
     dragRef.current = { dragging:false, moved:false, sx:e.clientX, sy:e.clientY }
 
     const onMove = ev => {
@@ -129,7 +137,7 @@ function Pion({ pion, idx, side, isSelected, canvasRef, onDragStart, onDragMove,
         position:'absolute', left:`${pion.x}%`, top:`${pion.y}%`,
         transform:'translate(-50%,-50%)',
         display:'flex', flexDirection:'column', alignItems:'center', gap:2,
-        cursor:'grab', zIndex: isSelected ? 20 : 10, userSelect:'none',
+        cursor: isGK ? 'default' : 'grab', zIndex: isSelected ? 20 : 10, userSelect:'none',
       }}
       onMouseDown={onMouseDown}
       onClick={e => e.stopPropagation()}
@@ -138,6 +146,7 @@ function Pion({ pion, idx, side, isSelected, canvasRef, onDragStart, onDragMove,
         {posLabel}
       </div>
       <div style={{
+        position:'relative',
         width:32, height:32, borderRadius:'50%',
         background:c.bg, color:c.tx,
         display:'flex', alignItems:'center', justifyContent:'center',
@@ -149,6 +158,7 @@ function Pion({ pion, idx, side, isSelected, canvasRef, onDragStart, onDragMove,
         pointerEvents:'none',
       }}>
         {c.label}
+        {isGK && <span style={{ position:'absolute', bottom:-2, right:-2, fontSize:7, background:'rgba(0,0,0,0.8)', borderRadius:2, padding:'0 2px', color:'rgba(255,255,255,0.5)' }}>🔒</span>}
       </div>
       <div style={{ fontSize:8, background:'rgba(0,0,0,0.8)', color:'rgba(255,255,255,0.85)', padding:'1px 4px', borderRadius:2, whiteSpace:'nowrap', maxWidth:68, overflow:'hidden', textOverflow:'ellipsis', pointerEvents:'none' }}>
         {(pion.rIP||'').split(' ').slice(0,2).join(' ')}

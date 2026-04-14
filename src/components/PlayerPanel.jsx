@@ -7,8 +7,8 @@ const ZONE_STYLES = {
   attack:  { bg:'rgba(255,102,25,0.1)',  border:'rgba(255,102,25,0.3)',  text:'#FF6619', label:'ATTAQUE' },
   midhigh: { bg:'rgba(194,24,91,0.1)',   border:'rgba(194,24,91,0.3)',   text:'#C2185B', label:'MIL. OFF.' },
   mid:     { bg:'rgba(55,138,221,0.1)',  border:'rgba(55,138,221,0.3)',  text:'#378ADD', label:'MILIEU' },
-  midlow:  { bg:'rgba(230,126,34,0.1)', border:'rgba(230,126,34,0.3)', text:'#E67E22', label:'MIL. DÉF.' },
-  defense: { bg:'rgba(91,45,142,0.1)',   border:'rgba(91,45,142,0.3)',   text:'#9B59B6', label:'DÉFENSE' },
+  midlow:  { bg:'rgba(230,126,34,0.1)', border:'rgba(230,126,34,0.3)', text:'#E67E22', label:'DEF. MID.' },
+  defense: { bg:'rgba(91,45,142,0.1)',   border:'rgba(91,45,142,0.3)',   text:'#9B59B6', label:'DEFENCE' },
 }
 
 function AttributeChips({ role }) {

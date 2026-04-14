@@ -5,7 +5,7 @@
  * selon les principes FM26 et la théorie tactique.
  */
 
-// Paires IP→OOP naturellement cohérentes
+// Naturally coherent IP→OOP pairs
 const GOOD_PAIRS = new Set([
   // GK
   'Ball-Playing GK|Line-Holding Keeper',
@@ -68,19 +68,19 @@ const GOOD_PAIRS = new Set([
   'Channel Forward|Central Outlet CF',
 ])
 
-// Paires IP→OOP contradictoires (pénalité forte)
+// Contradictory IP→OOP pairs (strong penalty)
 const BAD_PAIRS = new Set([
-  'No-Nonsense GK|Sweeper Keeper',        // contradictoire
-  'Ball-Playing GK|Goalkeeper',           // sous-exploité
-  'Advanced Wing Back|Holding WB',        // bloque le mouvement offensif
-  'Overlapping CB (3CB)|Covering CB',     // mauvaise zone
+  'No-Nonsense GK|Sweeper Keeper',        // contradictory
+  'Ball-Playing GK|Goalkeeper',           // under-exploited
+  'Advanced Wing Back|Holding WB',        // blocks offensive movement
+  'Overlapping CB (3CB)|Covering CB',     // wrong zone
   'Poacher|Pressing CM',                  // mauvais type de poste
-  'False 9|Tracking CF',                  // cohérent mais pas idéal
+  'False 9|Tracking CF',                  // coherent but not ideal
   'Deep-Lying Playmaker|Pressing DM (2DM)', // lui demande de presser alors qu'il distribue
-  'Half Back|Pressing CM',               // rôle trop différent
+  'Half Back|Pressing CM',               // role too different
 ])
 
-// Catégories de type de poste : offensive / defensive / balanced
+// Position type categories: offensive / defensive / balanced
 const ROLE_NATURE = {
   'Advanced Wing Back': 'offensive', 'Playmaking Wing Back': 'offensive', 'Inside Full Back': 'balanced',
   'Ball-Playing CB': 'balanced', 'Advanced CB': 'offensive', 'Overlapping CB (3CB)': 'offensive',
@@ -110,21 +110,21 @@ export function computeCoherence(rIP, rOOP) {
   const key = `${rIP}|${rOOP}`
 
   if (GOOD_PAIRS.has(key)) {
-    return { level: 'good', color: '#26E676', label: '✓', tooltip: `Combinaison optimale : ${rIP} + ${rOOP}` }
+    return { level: 'good', color: '#26E676', label: '✓', tooltip: `Optimal combination: ${rIP} + ${rOOP}` }
   }
 
   if (BAD_PAIRS.has(key)) {
-    return { level: 'bad', color: '#E74C3C', label: '✕', tooltip: `Combinaison contradictoire : ${rIP} + ${rOOP}` }
+    return { level: 'bad', color: '#E74C3C', label: '✕', tooltip: `Contradictory combination: ${rIP} + ${rOOP}` }
   }
 
-  // Vérification nature IP vs OOP
+  // Check IP vs OOP nature
   const ipNature  = ROLE_NATURE[rIP]  || 'balanced'
   const oopNature = OOP_NATURE[rOOP] || 'balanced'
 
-  // Un rôle très offensif IP avec un rôle très défensif OOP = ok (c'est l'idée)
-  // Un rôle très défensif IP avec un rôle très offensif OOP = problématique
+  // A very offensive IP role with a very defensive OOP role = ok (that's the idea)
+  // A very defensive IP role with a very offensive OOP role = problematic
   if (ipNature === 'defensive' && oopNature === 'offensive') {
-    return { level: 'warn', color: '#FF6619', label: '~', tooltip: `Attention : ${rIP} (défensif) mais ${rOOP} (offensif en OOP)` }
+    return { level: 'warn', color: '#FF6619', label: '~', tooltip: `Warning: ${rIP} (defensive) but ${rOOP} (offensive in OOP)` }
   }
 
   return { level: 'ok', color: 'rgba(255,255,255,0.25)', label: '·', tooltip: `Combinaison standard : ${rIP} + ${rOOP}` }

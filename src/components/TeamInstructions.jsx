@@ -37,7 +37,7 @@ function SliderOpts({ opts, value, onChange, disabledOpts = [] }) {
           <button
             key={o}
             onClick={() => !isDisabled && onChange(o)}
-            title={isDisabled ? 'Non disponible (conflit avec l\'autre réglage)' : ''}
+            title={isDisabled ? 'Non disponible (conflit avec l\'other setting)' : ''}
             style={{
               padding: '2px 6px', borderRadius: 3, fontSize: 9,
               cursor: isDisabled ? 'not-allowed' : 'pointer',
@@ -288,7 +288,7 @@ export default function TeamInstructions() {
                   fontWeight: ti.mentality === m ? 600 : 400,
                 }}
               >
-                {m.replace('Very Defensive','V.Déf').replace('Defensive','Déf')
+                {m.replace('Very Defensive','V.Def').replace('Defensive','Def')
                   .replace('Very Offensive','V.Off').replace('Offensive','Off')}
               </button>
             ))}

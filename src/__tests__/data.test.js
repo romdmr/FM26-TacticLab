@@ -12,31 +12,31 @@ import { TEAM_PROFILES, PROFILE_KEYS, getStyleCompatibility } from '../data/team
 
 // ── Données FM26 : rôles ───────────────────────────────────────────────────
 describe('ROLES_IP', () => {
-  it('existe et contient au moins 8 types de postes', () => {
+  it('exists and contains at least 8 position types', () => {
     expect(Object.keys(ROLES_IP).length).toBeGreaterThanOrEqual(8)
   })
 
-  it('chaque type de poste a au moins un rôle IP', () => {
+  it('each position type has at least one IP role', () => {
     Object.entries(ROLES_IP).forEach(([type, roles]) => {
       expect(Array.isArray(roles)).toBe(true)
       expect(roles.length).toBeGreaterThan(0)
     })
   })
 
-  it('contient les types de postes fondamentaux', () => {
+  it('contains fundamental position types', () => {
     const required = ['GK', 'CB', 'FB', 'WB', 'DM', 'CM', 'ST']
     required.forEach(t => {
       expect(ROLES_IP).toHaveProperty(t)
     })
   })
 
-  it('GK a bien les rôles attendus', () => {
+  it('GK has the expected roles', () => {
     expect(ROLES_IP.GK).toContain('Goalkeeper')
     expect(ROLES_IP.GK).toContain('Ball-Playing GK')
     expect(ROLES_IP.GK).toContain('No-Nonsense GK')
   })
 
-  it('ST a bien les rôles offensifs attendus', () => {
+  it('ST has the expected offensive roles', () => {
     expect(ROLES_IP.ST).toContain('Centre Forward')
     expect(ROLES_IP.ST).toContain('False 9')
     expect(ROLES_IP.ST).toContain('Poacher')
@@ -45,25 +45,25 @@ describe('ROLES_IP', () => {
 })
 
 describe('ROLES_OOP', () => {
-  it('chaque type de poste a au moins un rôle OOP', () => {
+  it('each position type has at least one OOP role', () => {
     Object.entries(ROLES_OOP).forEach(([type, roles]) => {
       expect(Array.isArray(roles)).toBe(true)
       expect(roles.length).toBeGreaterThan(0)
     })
   })
 
-  it('GK OOP contient Sweeper Keeper et Line-Holding Keeper', () => {
+  it('GK OOP contains Sweeper Keeper and Line-Holding Keeper', () => {
     expect(ROLES_OOP.GK).toContain('Sweeper Keeper')
     expect(ROLES_OOP.GK).toContain('Line-Holding Keeper')
   })
 
-  it('ST OOP contient Tracking CF', () => {
+  it('ST OOP contains Tracking CF', () => {
     expect(ROLES_OOP.ST).toContain('Tracking CF')
   })
 })
 
 describe('POS_TYPES', () => {
-  it('chaque type a bg, tx et label', () => {
+  it('each type has bg, tx and label', () => {
     Object.values(POS_TYPES).forEach(type => {
       expect(type).toHaveProperty('bg')
       expect(type).toHaveProperty('tx')
@@ -74,11 +74,11 @@ describe('POS_TYPES', () => {
 
 // ── Positions fixes ────────────────────────────────────────────────────────
 describe('PITCH_POSITIONS', () => {
-  it('contient exactement 24 positions', () => {
+  it('contains exactly 24 positions', () => {
     expect(Object.keys(PITCH_POSITIONS).length).toBe(24)
   })
 
-  it('chaque position a les propriétés requises', () => {
+  it('each position has the required properties', () => {
     Object.entries(PITCH_POSITIONS).forEach(([id, pos]) => {
       expect(pos).toHaveProperty('x')
       expect(pos).toHaveProperty('y')
@@ -88,7 +88,7 @@ describe('PITCH_POSITIONS', () => {
     })
   })
 
-  it('les coordonnées sont comprises entre 0 et 100', () => {
+  it('coordinates are between 0 and 100', () => {
     Object.values(PITCH_POSITIONS).forEach(pos => {
       expect(pos.x).toBeGreaterThanOrEqual(0)
       expect(pos.x).toBeLessThanOrEqual(100)
@@ -97,25 +97,25 @@ describe('PITCH_POSITIONS', () => {
     })
   })
 
-  it('GK est en bas du terrain (y > 80)', () => {
+  it('GK is at the bottom of the pitch (y > 80)', () => {
     expect(PITCH_POSITIONS.GK.y).toBeGreaterThan(80)
   })
 
-  it('les attaquants sont en haut (y < 25)', () => {
+  it('attackers are at the top (y < 25)', () => {
     expect(PITCH_POSITIONS.STC.y).toBeLessThan(25)
     expect(PITCH_POSITIONS.STL.y).toBeLessThan(25)
     expect(PITCH_POSITIONS.STR.y).toBeLessThan(25)
   })
 
-  it('GK a le type GK', () => {
+  it('GK has type GK', () => {
     expect(PITCH_POSITIONS.GK.type).toBe('GK')
   })
 
-  it('STC a le type ST', () => {
+  it('STC has type ST', () => {
     expect(PITCH_POSITIONS.STC.type).toBe('ST')
   })
 
-  it('chaque type de position a des rôles IP correspondants', () => {
+  it('each position type has corresponding IP roles', () => {
     Object.values(PITCH_POSITIONS).forEach(pos => {
       expect(ROLES_IP).toHaveProperty(pos.type)
     })
@@ -123,14 +123,14 @@ describe('PITCH_POSITIONS', () => {
 })
 
 describe('findNearestPosition', () => {
-  it('trouve la position la plus proche dans le rayon de snap', () => {
+  it('finds the nearest position within snap radius', () => {
     const gk = PITCH_POSITIONS.GK
     const result = findNearestPosition(gk.x, gk.y)
     expect(result).not.toBeNull()
     expect(result.id).toBe('GK')
   })
 
-  it('retourne null si aucune position dans le rayon', () => {
+  it('returns null if no position within radius', () => {
     // Coordonnées au milieu du terrain, loin de toute position fixe
     const result = findNearestPosition(50, 50)
     // Peut retourner null ou la position la plus proche selon le rayon
@@ -140,7 +140,7 @@ describe('findNearestPosition', () => {
     }
   })
 
-  it('exclut correctement la position spécifiée', () => {
+  it('correctly excludes the specified position', () => {
     const gk = PITCH_POSITIONS.GK
     const result = findNearestPosition(gk.x, gk.y, 'GK')
     // Ne doit pas retourner GK lui-même
@@ -151,19 +151,19 @@ describe('findNearestPosition', () => {
 })
 
 describe('Formations', () => {
-  it('les formations IP contiennent exactement 11 postes chacune', () => {
+  it('IP formations contain exactly 11 positions each', () => {
     Object.entries(FORMATIONS_IP).forEach(([name, positions]) => {
       expect(positions.length).toBe(11)
     })
   })
 
-  it('les formations OOP contiennent exactement 11 postes chacune', () => {
+  it('OOP formations contain exactly 11 positions each', () => {
     Object.entries(FORMATIONS_OOP).forEach(([name, positions]) => {
       expect(positions.length).toBe(11)
     })
   })
 
-  it('toutes les positions référencées dans les formations existent dans PITCH_POSITIONS', () => {
+  it('all positions referenced in formations exist in PITCH_POSITIONS', () => {
     const allFormations = [...Object.values(FORMATIONS_IP), ...Object.values(FORMATIONS_OOP)]
     allFormations.forEach(formation => {
       formation.forEach(posId => {
@@ -172,7 +172,7 @@ describe('Formations', () => {
     })
   })
 
-  it('toutes les formations incluent un GK', () => {
+  it('all formations include a GK', () => {
     const allFormations = { ...FORMATIONS_IP, ...FORMATIONS_OOP }
     Object.entries(allFormations).forEach(([name, positions]) => {
       expect(positions).toContain('GK')
@@ -182,11 +182,11 @@ describe('Formations', () => {
 
 // ── Attributs ──────────────────────────────────────────────────────────────
 describe('ROLE_ATTRIBUTES', () => {
-  it('contient des attributs pour au moins 40 rôles', () => {
+  it('contains attributes for at least 40 roles', () => {
     expect(Object.keys(ROLE_ATTRIBUTES).length).toBeGreaterThanOrEqual(40)
   })
 
-  it('chaque entrée a les propriétés key, preferred, unnecessary', () => {
+  it('each entry has key, preferred, unnecessary properties', () => {
     Object.entries(ROLE_ATTRIBUTES).forEach(([role, attrs]) => {
       expect(attrs).toHaveProperty('key')
       expect(attrs).toHaveProperty('preferred')
@@ -196,7 +196,7 @@ describe('ROLE_ATTRIBUTES', () => {
     })
   })
 
-  it('Goalkeeper a les bons attributs clés', () => {
+  it('Goalkeeper has the correct key attributes', () => {
     const gk = ROLE_ATTRIBUTES['Goalkeeper']
     expect(gk).toBeDefined()
     expect(gk.key).toContain('Reflexes')
@@ -204,7 +204,7 @@ describe('ROLE_ATTRIBUTES', () => {
     expect(gk.key).toContain('Handling')
   })
 
-  it('False 9 a les attributs techniques attendus', () => {
+  it('False 9 has the expected technical attributes', () => {
     const f9 = ROLE_ATTRIBUTES['False 9']
     expect(f9).toBeDefined()
     expect(f9.key).toContain('Dribbling')
@@ -212,7 +212,7 @@ describe('ROLE_ATTRIBUTES', () => {
     expect(f9.key).toContain('Passing')
   })
 
-  it('No-Nonsense GK a Passing en unnecessary', () => {
+  it('No-Nonsense GK has Passing in unnecessary', () => {
     const nn = ROLE_ATTRIBUTES['No-Nonsense GK']
     expect(nn).toBeDefined()
     expect(nn.unnecessary).toContain('Passing')
@@ -221,11 +221,11 @@ describe('ROLE_ATTRIBUTES', () => {
 
 // ── Styles de jeu ──────────────────────────────────────────────────────────
 describe('PLAY_STYLES', () => {
-  it('contient exactement 10 styles FM26 officiels', () => {
+  it('contains exactly 10 official FM26 styles', () => {
     expect(PLAY_STYLE_KEYS.length).toBe(10)
   })
 
-  it('chaque style a les propriétés requises', () => {
+  it('each style has the required properties', () => {
     Object.values(PLAY_STYLES).forEach(style => {
       expect(style).toHaveProperty('label')
       expect(style).toHaveProperty('description')
@@ -237,40 +237,40 @@ describe('PLAY_STYLES', () => {
     })
   })
 
-  it('les styles clés sont présents', () => {
+  it('key styles are present', () => {
     const required = ['Tiki-Taka', 'Gegenpress', 'Park the Bus', 'Control Possession', 'Route One']
     required.forEach(s => {
       expect(PLAY_STYLES).toHaveProperty(s)
     })
   })
 
-  it('Gegenpress a un tempo élevé en IP', () => {
+  it('Gegenpress has high tempo in IP', () => {
     expect(PLAY_STYLES['Gegenpress'].tiIP.tempo).toMatch(/Higher/)
   })
 
-  it('Park the Bus a un Low Block en OOP', () => {
+  it('Park the Bus has a Low Block in OOP', () => {
     expect(PLAY_STYLES['Park the Bus'].tiOOP.lineEngagement).toBe('Low Block')
   })
 
-  it('Tiki-Taka a des passes très courtes en IP', () => {
+  it('Tiki-Taka has very short passing in IP', () => {
     expect(PLAY_STYLES['Tiki-Taka'].tiIP.passingDirectness).toBe('Much Shorter')
   })
 })
 
 // ── Profils d'équipe ───────────────────────────────────────────────────────
 describe('TEAM_PROFILES', () => {
-  it('contient exactement 4 profils', () => {
+  it('contains exactly 4 profiles', () => {
     expect(PROFILE_KEYS.length).toBe(4)
   })
 
-  it('les 4 profils attendus sont présents', () => {
+  it('all 4 expected profiles are present', () => {
     expect(TEAM_PROFILES).toHaveProperty('elite')
     expect(TEAM_PROFILES).toHaveProperty('top')
     expect(TEAM_PROFILES).toHaveProperty('subtop')
     expect(TEAM_PROFILES).toHaveProperty('underdog')
   })
 
-  it('chaque profil a les propriétés requises', () => {
+  it('each profile has the required properties', () => {
     Object.values(TEAM_PROFILES).forEach(profile => {
       expect(profile).toHaveProperty('key')
       expect(profile).toHaveProperty('label')
@@ -285,46 +285,46 @@ describe('TEAM_PROFILES', () => {
     })
   })
 
-  it('Elite a Tiki-Taka comme style idéal', () => {
+  it('Elite has Tiki-Taka as ideal style', () => {
     expect(TEAM_PROFILES.elite.idealStyles).toContain('Tiki-Taka')
   })
 
-  it('Underdog a Park the Bus comme style idéal', () => {
+  it('Underdog has Park the Bus as ideal style', () => {
     expect(TEAM_PROFILES.underdog.idealStyles).toContain('Park the Bus')
   })
 
-  it('Elite a Park the Bus comme style sous-optimal', () => {
+  it('Elite has Park the Bus as sub-optimal style', () => {
     expect(TEAM_PROFILES.elite.suboptimalStyles).toContain('Park the Bus')
   })
 
-  it('Underdog a Tiki-Taka comme style sous-optimal', () => {
+  it('Underdog has Tiki-Taka as sub-optimal style', () => {
     expect(TEAM_PROFILES.underdog.suboptimalStyles).toContain('Tiki-Taka')
   })
 })
 
 describe('getStyleCompatibility', () => {
-  it('retourne "ideal" pour Elite + Tiki-Taka', () => {
+  it('returns "ideal" for Elite + Tiki-Taka', () => {
     const result = getStyleCompatibility('elite', 'Tiki-Taka')
     expect(result.level).toBe('ideal')
   })
 
-  it('retourne "poor" pour Underdog + Tiki-Taka', () => {
+  it('returns "poor" for Underdog + Tiki-Taka', () => {
     const result = getStyleCompatibility('underdog', 'Tiki-Taka')
     expect(result.level).toBe('poor')
     expect(result.penalty).toBeGreaterThan(0)
   })
 
-  it('retourne "ideal" pour Underdog + Park the Bus', () => {
+  it('returns "ideal" for Underdog + Park the Bus', () => {
     const result = getStyleCompatibility('underdog', 'Park the Bus')
     expect(result.level).toBe('ideal')
   })
 
-  it('retourne "poor" pour Elite + Park the Bus', () => {
+  it('returns "poor" for Elite + Park the Bus', () => {
     const result = getStyleCompatibility('elite', 'Park the Bus')
     expect(result.level).toBe('poor')
   })
 
-  it('retourne une pénalité pour un style sous-optimal', () => {
+  it('returns a penalty for a sub-optimal style', () => {
     const result = getStyleCompatibility('underdog', 'Gegenpress')
     expect(result.penalty).toBeGreaterThan(0)
   })

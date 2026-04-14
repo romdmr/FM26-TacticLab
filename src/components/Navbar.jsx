@@ -89,9 +89,9 @@ export default function Navbar({ onSavedClick }) {
           TACTIC<span style={{ color:'#26E676' }}>LAB</span>
         </div>
 
-        {navLink('Accueil', 'home')}
+        {navLink('Home', 'home')}
         {navLink('Builder', 'builder')}
-        {navLink('Classement', 'community')}
+        {navLink('Leaderboard', 'community')}
 
         {/* Profile pill */}
         <button onClick={() => setShowProfile(v => !v)} style={{

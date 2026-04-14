@@ -33,7 +33,7 @@ const PIONS_SIMPLE = [
 ]
 
 describe('analyseTeamProfile', () => {
-  it('retourne les propriétés attendues', () => {
+  it('returns the expected properties', () => {
     const result = analyseTeamProfile(PIONS_SIMPLE, 'Control Possession', 'top')
     expect(result).toHaveProperty('score')
     expect(result).toHaveProperty('issues')
@@ -43,24 +43,24 @@ describe('analyseTeamProfile', () => {
     expect(result.score).toBeLessThanOrEqual(10)
   })
 
-  it('style idéal pour le profil = pas de pénalité de style', () => {
+  it('ideal style for profile = no style penalty', () => {
     const result = analyseTeamProfile(PIONS_SIMPLE, 'Park the Bus', 'underdog')
     const styleIssue = result.issues.find(i => i.toLowerCase().includes('park the bus'))
     expect(styleIssue).toBeUndefined()
   })
 
-  it('Underdog + Tiki-Taka = pénalité score sévère', () => {
+  it('Underdog + Tiki-Taka = severe score penalty', () => {
     const tikitaka = analyseTeamProfile(PIONS_SIMPLE, 'Tiki-Taka', 'underdog')
     const control  = analyseTeamProfile(PIONS_SIMPLE, 'Park the Bus', 'underdog')
     expect(tikitaka.score).toBeLessThan(control.score)
   })
 
-  it('Elite + Park the Bus = issues générées', () => {
+  it('Elite + Park the Bus = issues generated', () => {
     const result = analyseTeamProfile(PIONS_SIMPLE, 'Park the Bus', 'elite')
     expect(result.issues.length).toBeGreaterThan(0)
   })
 
-  it('Underdog avec rôles complexes = pénalité', () => {
+  it('Underdog with complex roles = penalty', () => {
     const complexPions = [
       makePion('GK',   'Ball-Playing GK',       'Sweeper Keeper'),
       makePion('CDL',  'Ball-Playing CB',        'Covering CB'),
@@ -79,7 +79,7 @@ describe('analyseTeamProfile', () => {
     expect(complexResult.score).toBeLessThan(simpleResult.score)
   })
 
-  it('Underdog avec système simple = bonus', () => {
+  it('Underdog with simple system = bonus', () => {
     const simplePions = [
       makePion('GK',  'Goalkeeper',    'Goalkeeper'),
       makePion('WBL', 'Wing Back',     'Holding WB'),
@@ -97,14 +97,14 @@ describe('analyseTeamProfile', () => {
     expect(result.strengths.length).toBeGreaterThan(0)
   })
 
-  it('Sub-Top + Gegenpress = pénalité', () => {
+  it('Sub-Top + Gegenpress = penalty', () => {
     const resultGegen    = analyseTeamProfile(PIONS_SIMPLE, 'Gegenpress', 'subtop')
     const resultCounter  = analyseTeamProfile(PIONS_SIMPLE, 'Fluid Counter-Attack', 'subtop')
     expect(resultGegen.score).toBeLessThan(resultCounter.score)
     expect(resultGegen.issues.length).toBeGreaterThan(0)
   })
 
-  it('retourne des conseils non vides pour chaque profil', () => {
+  it('returns non-empty advice for each profile', () => {
     Object.keys(TEAM_PROFILES).forEach(profileKey => {
       const result = analyseTeamProfile(PIONS_SIMPLE, 'Control Possession', profileKey)
       expect(Array.isArray(result.advice)).toBe(true)
@@ -114,7 +114,7 @@ describe('analyseTeamProfile', () => {
 })
 
 describe('getStyleRecommendations', () => {
-  it('retourne des recommandations pour chaque profil', () => {
+  it('returns recommendations for each profile', () => {
     Object.keys(TEAM_PROFILES).forEach(profileKey => {
       const recs = getStyleRecommendations(profileKey)
       expect(Array.isArray(recs)).toBe(true)
@@ -122,7 +122,7 @@ describe('getStyleRecommendations', () => {
     })
   })
 
-  it('chaque recommandation a style, level et label', () => {
+  it('each recommendation has style, level and label', () => {
     const recs = getStyleRecommendations('elite')
     recs.forEach(r => {
       expect(r).toHaveProperty('style')
@@ -132,21 +132,21 @@ describe('getStyleRecommendations', () => {
     })
   })
 
-  it('Tiki-Taka est idéal pour Elite', () => {
+  it('Tiki-Taka is ideal for Elite', () => {
     const recs = getStyleRecommendations('elite')
     const tikitaka = recs.find(r => r.style === 'Tiki-Taka')
     expect(tikitaka).toBeDefined()
     expect(tikitaka.level).toBe('ideal')
   })
 
-  it('Park the Bus est déconseillé pour Elite', () => {
+  it('Park the Bus is not advised for Elite', () => {
     const recs = getStyleRecommendations('elite')
     const ptb = recs.find(r => r.style === 'Park the Bus')
     expect(ptb).toBeDefined()
     expect(ptb.level).toBe('poor')
   })
 
-  it('Park the Bus est idéal pour Underdog', () => {
+  it('Park the Bus is ideal for Underdog', () => {
     const recs = getStyleRecommendations('underdog')
     const ptb = recs.find(r => r.style === 'Park the Bus')
     expect(ptb).toBeDefined()

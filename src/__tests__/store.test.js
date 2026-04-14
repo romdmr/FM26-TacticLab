@@ -52,11 +52,11 @@ function snapPion(pions, idx, x, y) {
 
 // ── Tests makePions ────────────────────────────────────────────────────────
 describe('makePions', () => {
-  it('génère 11 pions pour une formation 4-3-3', () => {
+  it('generates 11 players for a 4-3-3 formation', () => {
     expect(makePions('4-3-3', FORMATIONS_IP).length).toBe(11)
   })
 
-  it('chaque pion a les propriétés requises', () => {
+  it('each player has the required properties', () => {
     makePions('4-3-3', FORMATIONS_IP).forEach(p => {
       expect(p).toHaveProperty('posId')
       expect(p).toHaveProperty('t')
@@ -67,19 +67,19 @@ describe('makePions', () => {
     })
   })
 
-  it('le rôle IP par défaut est valide pour chaque type de poste', () => {
+  it('default IP role is valid for each position type', () => {
     makePions('4-3-3', FORMATIONS_IP).forEach(p => {
       expect(ROLES_IP[p.t]).toContain(p.rIP)
     })
   })
 
-  it('le rôle OOP par défaut est valide pour chaque type de poste', () => {
+  it('default OOP role is valid for each position type', () => {
     makePions('4-4-2', FORMATIONS_OOP).forEach(p => {
       expect(ROLES_OOP[p.t]).toContain(p.rOOP)
     })
   })
 
-  it('le GK est dans la formation', () => {
+  it('GK is in the formation', () => {
     const gk = makePions('4-3-3', FORMATIONS_IP).find(p => p.t === 'GK')
     expect(gk).toBeDefined()
     expect(gk.posId).toBe('GK')
@@ -94,7 +94,7 @@ describe('Logique de snap (snapPion)', () => {
     pions = makePions('4-3-3', FORMATIONS_IP)
   })
 
-  it('un pion glissé au centre du terrain (loin de toutes positions) revient à l\'origine', () => {
+  it('a player dragged to the centre (far from all positions) returns to origin', () => {
     // Le GK est à y~91, on le glisse vers x=50, y=50 (centre)
     // Toutes les positions sont soit dans les zones hautes soit basses, le centre est loin
     const gkOrigX = pions[0].x
@@ -110,7 +110,7 @@ describe('Logique de snap (snapPion)', () => {
     }
   })
 
-  it('un pion glissé exactement sur une position libre se snap dessus', () => {
+  it('a player dragged onto a free position snaps to it', () => {
     // On cherche une position non occupée dans la formation 4-3-3
     const occupiedIds = pions.map(p => p.posId)
     const freePos = Object.entries(PITCH_POSITIONS).find(([id]) => !occupiedIds.includes(id))
@@ -126,7 +126,7 @@ describe('Logique de snap (snapPion)', () => {
     }
   })
 
-  it('après un snap, le pion a le type de poste correspondant à sa nouvelle position', () => {
+  it('after a snap, the player has the position type of their new position', () => {
     // Glisse pion[0] (GK) vers la position FBL
     const fblPos = PITCH_POSITIONS.FBL
     const result = snapPion(pions, 0, fblPos.x, fblPos.y)
@@ -136,7 +136,7 @@ describe('Logique de snap (snapPion)', () => {
     }
   })
 
-  it('un swap préserve la cohérence des types de postes', () => {
+  it('a swap preserves position type coherence', () => {
     // Trouver deux pions adjacents et les swapper
     const stcIdx = pions.findIndex(p => p.posId === 'STC')
     if (stcIdx === -1) return
@@ -160,21 +160,21 @@ describe('Logique de snap (snapPion)', () => {
 
 // ── Tests defaultTIValues ──────────────────────────────────────────────────
 describe('defaultTIValues', () => {
-  it('retourne les sections IP et OOP', () => {
+  it('returns IP and OOP sections', () => {
     const ti = defaultTIValues()
     expect(ti).toHaveProperty('ip')
     expect(ti).toHaveProperty('oop')
     expect(ti).toHaveProperty('mentality')
   })
 
-  it('les sections IP contiennent overview, finalThird, progression, buildup', () => {
+  it('IP sections contain overview, finalThird, progression, buildup', () => {
     const ti = defaultTIValues()
     ;['overview','finalThird','progression','buildup'].forEach(s => {
       expect(ti.ip).toHaveProperty(s)
     })
   })
 
-  it('les sections OOP contiennent overview, highPress, midBlock, lowBlock', () => {
+  it('OOP sections contain overview, highPress, midBlock, lowBlock', () => {
     const ti = defaultTIValues()
     ;['overview','highPress','midBlock','lowBlock'].forEach(s => {
       expect(ti.oop).toHaveProperty(s)
@@ -183,12 +183,12 @@ describe('defaultTIValues', () => {
 })
 
 // ── Tests des templates ────────────────────────────────────────────────────
-describe('Templates de référence — intégrité des données', () => {
-  it('7 templates de référence existent', () => {
+describe('Reference templates — data integrity', () => {
+  it('7 reference templates exist', () => {
     expect(TACTIC_TEMPLATES.length).toBe(7)
   })
 
-  it('chaque template a les champs obligatoires', () => {
+  it('each template has the mandatory fields', () => {
     TACTIC_TEMPLATES.forEach(tpl => {
       ;['id','name','style','teamProfile','formIP','formOOP','pionsIP','pionsOOP','ti'].forEach(k => {
         expect(tpl).toHaveProperty(k)
@@ -196,14 +196,14 @@ describe('Templates de référence — intégrité des données', () => {
     })
   })
 
-  it('chaque template a exactement 11 pions IP et 11 pions OOP', () => {
+  it('each template has exactly 11 IP and 11 OOP players', () => {
     TACTIC_TEMPLATES.forEach(tpl => {
       expect(tpl.pionsIP.length).toBe(11)
       expect(tpl.pionsOOP.length).toBe(11)
     })
   })
 
-  it('tous les pions ont des rôles valides', () => {
+  it('all players have valid roles', () => {
     TACTIC_TEMPLATES.forEach(tpl => {
       tpl.pionsIP.forEach(p => {
         expect(ROLES_IP[p.t]).toContain(p.rIP)
@@ -212,24 +212,24 @@ describe('Templates de référence — intégrité des données', () => {
     })
   })
 
-  it('chaque template inclut un GK', () => {
+  it('each template includes a GK', () => {
     TACTIC_TEMPLATES.forEach(tpl => {
       expect(tpl.pionsIP.some(p => p.t === 'GK')).toBe(true)
     })
   })
 
-  it('les IDs de templates sont uniques', () => {
+  it('template IDs are unique', () => {
     const ids = TACTIC_TEMPLATES.map(t => t.id)
     expect(new Set(ids).size).toBe(ids.length)
   })
 
-  it('le style de chaque template est un style FM26 valide', () => {
+  it('each template style is a valid FM26 style', () => {
     TACTIC_TEMPLATES.forEach(tpl => {
       expect(PLAY_STYLE_KEYS).toContain(tpl.style)
     })
   })
 
-  it('le profil de chaque template est un profil valide', () => {
+  it('each template profile is a valid profile', () => {
     const valid = ['elite','top','subtop','underdog']
     TACTIC_TEMPLATES.forEach(tpl => {
       expect(valid).toContain(tpl.teamProfile)

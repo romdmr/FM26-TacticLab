@@ -64,11 +64,35 @@ export const useStore = create(
         const key        = side === 'ip' ? 'pionsIP' : 'pionsOOP'
         const pions      = [...state[key]]
         const currentId  = pions[idx].posId
-        const nearest    = findNearestPosition(x, y, currentId)
+
+        // GK est verrouillé — retour à sa position sans modification
+        if (pions[idx].t === 'GK') {
+          const orig = PITCH_POSITIONS[currentId]
+          const newPions = [...pions]
+          newPions[idx] = { ...pions[idx], x: orig.x, y: orig.y }
+          return { [key]: newPions }
+        }
+
+        const nearest = findNearestPosition(x, y, currentId)
 
         if (nearest) {
+          // Ne pas autoriser de snap vers la position GK
+          if (PITCH_POSITIONS[nearest.id]?.type === 'GK') {
+            const orig = PITCH_POSITIONS[currentId]
+            const newPions = [...pions]
+            newPions[idx] = { ...pions[idx], x: orig.x, y: orig.y }
+            return { [key]: newPions }
+          }
+
           const occupiedIdx = pions.findIndex((p, i) => i !== idx && p.posId === nearest.id)
           if (occupiedIdx !== -1) {
+            // Ne pas swapper avec le GK
+            if (pions[occupiedIdx].t === 'GK') {
+              const orig = PITCH_POSITIONS[currentId]
+              const newPions = [...pions]
+              newPions[idx] = { ...pions[idx], x: orig.x, y: orig.y }
+              return { [key]: newPions }
+            }
             const posA = PITCH_POSITIONS[nearest.id]
             const posB = PITCH_POSITIONS[currentId]
             pions[idx] = { ...pions[idx], posId: nearest.id, t: posA.type, x: posA.x, y: posA.y, rIP: ROLES_IP[posA.type][0], rOOP: ROLES_OOP[posA.type][0] }

@@ -164,7 +164,45 @@ Chaque tactique est entièrement préconfigurée : formation IP/OOP, rôles pion
 
 ---
 
+## Feuille de route
+
+- [ ] Backend Supabase — persistance cross-session, comptes utilisateurs, partage par URL
+- [ ] Classement communautaire réel — votes, notes, filtres par style/profil
+- [ ] Export image/PDF — partager sa tactique en une image propre
+- [ ] Badges de cohérence — indicateurs rouge/orange/vert sur les pions
+- [ ] Vue côte-à-côte IP/OOP — visualiser les deux terrains simultanément
+- [ ] Comparateur de tactiques — mettre deux systèmes en parallèle
+
+---
+
+## Contribuer
+
+Les contributions sont les bienvenues, notamment :
+
+- Nouveaux templates de tactiques historiques
+- Corrections sur les rôles ou attributs FM26
+- Améliorations du moteur de scoring
+- Traductions (la base est en français)
+
+```bash
+# Fork le repo, crée une branche
+git checkout -b feature/ma-contribution
+
+# Commit et push
+git commit -m "feat: description"
+git push origin feature/ma-contribution
+
+# Ouvre une Pull Request
+```
+
+---
+
 ## Licence
 
 MIT — libre d'utilisation, de modification et de distribution.
 
+---
+
+<div align="center">
+  <sub>Construit avec ⚽ et React · Théorie par Jonathan Wilson</sub>
+</div>

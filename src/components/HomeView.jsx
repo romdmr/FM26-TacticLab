@@ -249,10 +249,10 @@ export default function HomeView() {
         <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
           {[
             { v: '10',  l: 'Types de postes',     c: '#26E676' },
-            { v: '80+', l: 'Rôles FM26 IP/OOP',   c: '#378ADD' },
-            { v: '7',   l: 'Dimensions scorées',  c: '#FF6619' },
+            { v: '80+', l: 'FM26 IP/OOP Roles',   c: '#378ADD' },
+            { v: '7',   l: 'Scored Dimensions',  c: '#FF6619' },
             { v: '10',  l: 'Styles FM26 officiels',c: '#C2185B' },
-            { v: '4',   l: 'Profils d\'équipe',   c: '#F1C40F' },
+            { v: '4',   l: 'Profils d\'team',   c: '#F1C40F' },
           ].map(s => (
             <div key={s.l} style={{ background: 'rgba(255,255,255,0.04)', border: '0.5px solid rgba(255,255,255,0.07)', borderRadius: 8, padding: '10px 18px', textAlign: 'center' }}>
               <div style={{ fontSize: 22, fontWeight: 700, color: s.c, lineHeight: 1 }}>{s.v}</div>
@@ -297,9 +297,9 @@ export default function HomeView() {
       <div style={{ padding: '0 60px 48px', borderTop: '0.5px solid rgba(255,255,255,0.07)' }}>
         <div style={{ paddingTop: 28, display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 18, maxWidth: 900 }}>
           {[
-            { icon: '⚽', title: 'Builder dual IP/OOP', desc: 'Positions fixes avec snap intelligent. Chaque pion se lock sur sa zone et propose les rôles FM26 correspondants. Glisse pour changer de poste.' },
-            { icon: '⚙', title: 'Team Instructions FM26', desc: '8 panels IP/OOP complets avec toutes les TI officielles. Overlap/Underlap avec exclusivité mutuelle par côté.' },
-            { icon: '★', title: 'Analyse 7 dimensions', desc: 'Défense, milieu, attaque, cohérence IP, solidité OOP, synergies, adéquation profil. Basé sur Wilson "Inverting the Pyramid" + données FM26 officielles.' },
+            { icon: '⚽', title: 'Builder dual IP/OOP', desc: 'Fixed positions with smart snap. Each piece locks to its zone and shows FM26 roles. Drag to change position.' },
+            { icon: '⚙', title: 'Team Instructions FM26', desc: '8 complete IP/OOP panels with all official TIs. Overlap/Underlap mutually exclusive per side.' },
+            { icon: '★', title: 'Analyse 7 dimensions', desc: 'Defence, midfield, attack, IP coherence, OOP solidity, synergies, profile fit. Based on official FM26 data.'' },
           ].map((f, i) => (
             <div key={i} style={{ background: 'rgba(255,255,255,0.03)', border: '0.5px solid rgba(255,255,255,0.07)', borderRadius: 10, padding: '16px 18px' }}>
               <div style={{ fontSize: 18, marginBottom: 8 }}>{f.icon}</div>

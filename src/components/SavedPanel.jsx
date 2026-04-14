@@ -53,7 +53,7 @@ export default function SavedPanel({ onClose }) {
         <div style={{ padding:'12px 16px', borderBottom:'0.5px solid rgba(255,255,255,0.08)', display:'flex', alignItems:'center', gap:10, flexShrink:0 }}>
           <div style={{ flex:1 }}>
             <div style={{ fontSize:14, fontWeight:600 }}>Mes tactiques</div>
-            <div style={{ fontSize:10, color:'rgba(255,255,255,0.35)', marginTop:1 }}>{saved.length}/20 sauvegardées en local</div>
+            <div style={{ fontSize:10, color:'rgba(255,255,255,0.35)', marginTop:1 }}>{saved.length}/20 saved locally</div>
           </div>
           <button onClick={handleSave} style={{
             padding:'5px 12px', borderRadius:6, fontSize:11, fontWeight:600, cursor:'pointer', border:'none',
@@ -62,7 +62,7 @@ export default function SavedPanel({ onClose }) {
             outline:'1px solid rgba(38,230,118,0.4)',
             transition:'all 0.2s',
           }}>
-            {justSaved ? '✓ Sauvegardé !' : '+ Sauvegarder'}
+            {justSaved ? '✓ Saved!' : '+ Save'}
           </button>
           <button onClick={onClose} style={{ width:26, height:26, borderRadius:5, background:'rgba(255,255,255,0.06)', border:'0.5px solid rgba(255,255,255,0.1)', color:'rgba(255,255,255,0.5)', cursor:'pointer', fontSize:12, display:'flex', alignItems:'center', justifyContent:'center' }}>✕</button>
         </div>
@@ -71,8 +71,8 @@ export default function SavedPanel({ onClose }) {
         <div style={{ flex:1, overflowY:'auto', padding:'8px 10px' }}>
           {saved.length === 0 ? (
             <div style={{ textAlign:'center', padding:'48px 20px', color:'rgba(255,255,255,0.25)', fontSize:12, lineHeight:1.8 }}>
-              Aucune tactique sauvegardée.<br />
-              <span style={{ fontSize:10 }}>Clique sur "+ Sauvegarder" pour enregistrer ta tactique actuelle.</span>
+              No tactics saved yet.<br />
+              <span style={{ fontSize:10 }}>Click "+ Sauvegarder" to save your current tactic.</span>
             </div>
           ) : (
             saved.map(tpl => {
@@ -99,7 +99,7 @@ export default function SavedPanel({ onClose }) {
                       <div
                         style={{ flex:1, fontSize:12, fontWeight:600, cursor:'text' }}
                         onClick={() => { setEditingId(tpl.id); setEditName(tpl.name) }}
-                        title="Cliquer pour renommer"
+                        title="Click to rename"
                       >
                         {tpl.name}
                       </div>

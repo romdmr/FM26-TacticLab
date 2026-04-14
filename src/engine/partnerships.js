@@ -10,34 +10,34 @@
 
 // ── Types de partnership ──────────────────────────────────────────────────
 export const PARTNERSHIP_TYPES = {
-  DIRECT:         { id: 'direct',        label: 'Direct',        color: '#26E676', dash: false, desc: 'Passes courtes et fiables entre deux positions proches' },
-  OVERLAPPING:    { id: 'overlapping',   label: 'Chevauchement', color: '#378ADD', dash: false, desc: 'Un joueur remonte pour créer la surnombre' },
-  INTERCHANGING:  { id: 'interchanging', label: 'Interchange',   color: '#FF6619', dash: true,  desc: 'Échange de positions entre deux joueurs' },
-  UNDERLAPPING:   { id: 'underlapping',  label: 'Sous-croisement', color: '#C2185B', dash: true, desc: 'Un joueur coupe vers l\'intérieur pour soutenir' },
+  DIRECT:         { id: 'direct',        label: 'Direct',        color: '#26E676', dash: false, desc: 'Short reliable passes between two close positions' },
+  OVERLAPPING:    { id: 'overlapping',   label: 'Overlap', color: '#378ADD', dash: false, desc: 'A player pushes forward to create an overload' },
+  INTERCHANGING:  { id: 'interchanging', label: 'Interchange',   color: '#FF6619', dash: true,  desc: 'Position exchange between two players' },
+  UNDERLAPPING:   { id: 'underlapping',  label: 'Underlap', color: '#C2185B', dash: true, desc: 'Un joueur coupe vers l\'inside to support' },
 }
 
 // Niveaux de risque
 export const RISK_LEVELS = {
-  LOW:     { id: 'low',    label: 'Faible',  color: '#26E676', score: 3 },
-  MEDIUM:  { id: 'medium', label: 'Moyen',   color: '#F1C40F', score: 2 },
-  HIGH:    { id: 'high',   label: 'Élevé',   color: '#FF6619', score: 1 },
+  LOW:     { id: 'low',    label: 'Low',  color: '#26E676', score: 3 },
+  MEDIUM:  { id: 'medium', label: 'Medium',   color: '#F1C40F', score: 2 },
+  HIGH:    { id: 'high',   label: 'High',   color: '#FF6619', score: 1 },
 }
 
-// ── Rôles par catégorie de mouvement ─────────────────────────────────────
+// ── Roles by movement category ─────────────────────────────────────
 const ROLE_CATEGORIES = {
-  // Joueurs qui cherchent la profondeur (créent des espaces)
+  // Players who look for depth (create spaces)
   runners: ['Inside Forward','Wide Forward','Channel Forward','Inside Winger','Advanced Playmaker','Channel Mid','False 9'],
-  // Joueurs qui chevauchent (remontent sur les flancs)
+  // Players who overlap (push up the flanks)
   overlapping: ['Advanced Wing Back','Playmaking Wing Back','Wing Back','Overlapping CB (3CB)'],
-  // Joueurs qui rentrent dans l'axe
+  // Players who come inside
   inverted: ['Inside Full Back','Inside Wing Back','Inside Winger','Inside Forward'],
-  // Joueurs qui distribuent (point de départ des constructions)
+  // Players who distribute (starting point of build-up)
   distributors: ['Deep-Lying Playmaker','Ball-Playing CB','Ball-Playing GK','Half Back','Midfield Playmaker'],
-  // Joueurs qui se projettent (B2B, atacants)
+  // Players who project forward (B2B, attackers)
   projectors: ['Box-to-Box Mid (2DM)','Box-to-Box Playmaker (2DM)','Advanced Playmaker','Channel Mid'],
-  // Joueurs statiques / positionnels
+  // Static / positional players
   anchors: ['Defensive Mid','Screening DM','Half Back','No-Nonsense CB','Covering CB'],
-  // Finisseurs
+  // Finishers
   finishers: ['Poacher','Centre Forward','Target Forward','False 9'],
 }
 
@@ -45,12 +45,12 @@ function hasCategory(role, cat) {
   return ROLE_CATEGORIES[cat]?.includes(role) ?? false
 }
 
-// ── Distance entre deux pions ─────────────────────────────────────────────
+// ── Distance between two players ─────────────────────────────────────────────
 function dist(a, b) {
   return Math.sqrt((a.x - b.x) ** 2 + (a.y - b.y) ** 2)
 }
 
-// ── Détermine si deux pions sont assez proches pour un partnership ────────
+// ── Determines if two players are close enough for a partnership ────────
 // Seuil adaptatif selon les types de postes
 function areNeighbors(a, b) {
   const d = dist(a, b)
@@ -60,7 +60,7 @@ function areNeighbors(a, b) {
   return d <= threshold
 }
 
-// ── Calcule le type et le risque d'un partnership ────────────────────────
+// ── Computes the type and risk of a partnership ────────────────────────
 function computePartnership(a, b) {
   // Déterminer le mouvement dominant entre les deux pions
   const aRole = a.rIP
@@ -84,7 +84,7 @@ function computePartnership(a, b) {
     return { type: PARTNERSHIP_TYPES.INTERCHANGING, risk: RISK_LEVELS.HIGH }
   }
 
-  // Chevauchement : un latéral qui monte + quelqu'un qui se crée dans l'espace
+  // Chevauchement : un latéral qui monte + quelqu'one who creates space in the'espace
   if ((aOverlap && bRuns) || (bOverlap && aRuns)) {
     return { type: PARTNERSHIP_TYPES.OVERLAPPING, risk: RISK_LEVELS.HIGH }
   }
@@ -122,7 +122,7 @@ function computePartnership(a, b) {
   return { type: PARTNERSHIP_TYPES.DIRECT, risk: RISK_LEVELS.LOW }
 }
 
-// ── Zone d'un pion ────────────────────────────────────────────────────────
+// ── Zone of a player ────────────────────────────────────────────────────────
 function getZone(pion) {
   if (pion.y > 70)      return 'defense'
   if (pion.y > 55)      return 'midlow'
@@ -137,7 +137,7 @@ function getSide(pion) {
   return 'central'
 }
 
-// ── Calcul de tous les partnerships pour un set de pions ─────────────────
+// ── Compute all partnerships for a set of players ─────────────────
 export function computePartnerships(pions) {
   const links = []
 
@@ -200,8 +200,8 @@ export function computeZoneScores(pions) {
   return zones
 }
 
-// ── Scores offensifs de mouvement vers l'avant ────────────────────────────
-// Inspiré de RateMyTactic : penetration, support, solidity par zone
+// ── Offensive forward movement scores ────────────────────────────
+// Inspired by RateMyTactic: penetration, support, solidity per zone
 export function computeForwardMovementScores(pions) {
   const zones = { left: [], central: [], right: [] }
   pions.forEach(p => { zones[getSide(p)].push(p) })
@@ -218,11 +218,11 @@ export function computeForwardMovementScores(pions) {
       if (hasCategory(r,'distributors'))support     += 2
       if (hasCategory(r,'overlapping')) support     += 1.5
       if (hasCategory(r,'anchors'))     solidity    += 2
-      // Bonus latéraux : présence couvrant
+      // Wide bonus: covering presence
       if (['Full Back','Wing Back','No-Nonsense CB','Centre-Back'].includes(r)) solidity += 1
     })
 
-    // Normaliser sur 20
+    // Normalise to 20
     const maxPen = Math.max(zonePions.length * 2, 1)
     const maxSup = Math.max(zonePions.length * 2, 1)
     const maxSol = Math.max(zonePions.length * 2, 1)
@@ -241,7 +241,7 @@ export function computeForwardMovementScores(pions) {
   }
 }
 
-// ── Responsabilités positionnelles par zone ───────────────────────────────
+// ── Positional responsibilities per zone ───────────────────────────────
 // Inspiré de RateMyTactic : quels joueurs assurent quelles responsabilités
 const RESPONSIBILITIES = {
   'Applying defensive pressure': (r) =>
@@ -261,11 +261,11 @@ const RESPONSIBILITIES = {
 }
 
 const ZONE_NAMES = {
-  left:    'Flanc gauche',
-  central: 'Milieu central',
-  right:   'Flanc droit',
-  defense: 'Défense centrale',
-  attack:  'Attaque centrale',
+  left:    'Left Flank',
+  central: 'Central Midfield',
+  right:   'Right Flank',
+  defense: 'Central Defence',
+  attack:  'Central Attack',
 }
 
 export function computePositionalResponsibilities(pionsIP, pionsOOP) {
@@ -304,38 +304,38 @@ export function computePositionalResponsibilities(pionsIP, pionsOOP) {
   return result
 }
 
-// ── Suggestions automatiques basées sur les scores ────────────────────────
+// ── Automatic suggestions based on scores ────────────────────────
 export function generatePartnershipSuggestions(fwdScores, partnerships, pionsIP) {
   const suggestions = []
 
   // Vérifier la solidité par côté
   if (fwdScores.left.solidity < 8) {
-    suggestions.push({ type: 'warning', zone: 'left', text: `Solidité faible sur le flanc gauche (${fwdScores.left.solidity}/20). Considérer un Holding WB ou un FB défensif à gauche.` })
+    suggestions.push({ type: 'warning', zone: 'left', text: `Low solidity on the left flank (${fwdScores.left.solidity}/20). Consider a Holding WB or defensive FB on the left.` })
   }
   if (fwdScores.right.solidity < 8) {
-    suggestions.push({ type: 'warning', zone: 'right', text: `Solidité faible sur le flanc droit (${fwdScores.right.solidity}/20). Considérer un Holding WB ou un FB défensif à droite.` })
+    suggestions.push({ type: 'warning', zone: 'right', text: `Low solidity on the right flank (${fwdScores.right.solidity}/20). Consider a Holding WB or defensive FB on the right.` })
   }
 
   // Vérifier la pénétration centrale
   if (fwdScores.central.penetration < 6) {
-    suggestions.push({ type: 'info', zone: 'central', text: `Pénétration centrale faible (${fwdScores.central.penetration}/20). Ajouter un Inside Forward, Channel Mid ou False 9 pour créer des espaces.` })
+    suggestions.push({ type: 'info', zone: 'central', text: `Low central penetration (${fwdScores.central.penetration}/20). Add an Inside Forward, Channel Mid or False 9 to create spaces.` })
   }
 
   // Vérifier le support central
   if (fwdScores.central.support < 6) {
-    suggestions.push({ type: 'info', zone: 'central', text: `Support central insuffisant (${fwdScores.central.support}/20). Un DLP ou Advanced Playmaker renforcerait la création centrale.` })
+    suggestions.push({ type: 'info', zone: 'central', text: `Insufficient central support (${fwdScores.central.support}/20). A DLP or Advanced Playmaker would strengthen central creation.` })
   }
 
   // Partnerships à haut risque sans ancre
   const highRiskLinks = partnerships.filter(l => l.risk.id === 'high')
   const hasAnchor = pionsIP.some(p => ['Defensive Mid','Half Back','Screening DM','No-Nonsense CB'].includes(p.rIP))
   if (highRiskLinks.length >= 3 && !hasAnchor) {
-    suggestions.push({ type: 'warning', zone: 'central', text: `${highRiskLinks.length} partnerships à haut risque sans ancre défensive. Un Screening DM ou Half Back sécuriserait les transitions.` })
+    suggestions.push({ type: 'warning', zone: 'central', text: `${highRiskLinks.length} high-risk partnerships without a defensive anchor. A Screening DM or Half Back would secure transitions.` })
   }
 
   // Trop peu de partnerships (formation trop dispersée)
   if (partnerships.length < 5) {
-    suggestions.push({ type: 'info', zone: 'general', text: `Seulement ${partnerships.length} connections entre pions. La formation semble dispersée — rapprocher les lignes améliorerait la circulation du ballon.` })
+    suggestions.push({ type: 'info', zone: 'general', text: `Only ${partnerships.length} connections between players. The formation looks dispersed — tightening the lines would improve ball circulation.` })
   }
 
   return suggestions

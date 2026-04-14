@@ -51,7 +51,7 @@ const EMPTY_TI = { overview: {}, finalThird: {}, progression: {}, buildup: {} }
 // ── Tests globaux ─────────────────────────────────────────────────────────
 describe('computeGlobalScore', () => {
 
-  it('retourne un objet avec les propriétés attendues', () => {
+  it('returns an object with the expected properties', () => {
     const result = computeGlobalScore(PIONS_433, PIONS_433, EMPTY_TI, EMPTY_TI, 'Control Possession', 'top')
     expect(result).toHaveProperty('global')
     expect(result).toHaveProperty('dimensions')
@@ -59,13 +59,13 @@ describe('computeGlobalScore', () => {
     expect(result).toHaveProperty('allStrengths')
   })
 
-  it('le score global est entre 0 et 10', () => {
+  it('global score is between 0 and 10', () => {
     const result = computeGlobalScore(PIONS_433, PIONS_433, EMPTY_TI, EMPTY_TI, 'Control Possession', 'top')
     expect(result.global).toBeGreaterThanOrEqual(0)
     expect(result.global).toBeLessThanOrEqual(10)
   })
 
-  it('les 7 dimensions sont présentes', () => {
+  it('all 7 dimensions are present', () => {
     const result = computeGlobalScore(PIONS_433, PIONS_433, EMPTY_TI, EMPTY_TI, 'Control Possession', 'top')
     const dims = ['defense', 'midfield', 'attack', 'ip', 'oop', 'synergies', 'profile']
     dims.forEach(d => {
@@ -73,7 +73,7 @@ describe('computeGlobalScore', () => {
     })
   })
 
-  it('chaque dimension a score, issues et strengths', () => {
+  it('each dimension has score, issues and strengths', () => {
     const result = computeGlobalScore(PIONS_433, PIONS_433, EMPTY_TI, EMPTY_TI, 'Control Possession', 'top')
     Object.values(result.dimensions).forEach(dim => {
       expect(dim).toHaveProperty('score')
@@ -84,13 +84,13 @@ describe('computeGlobalScore', () => {
     })
   })
 
-  it('une formation sans GK produit une pénalité défense significative', () => {
+  it('a formation without GK produces a significant defence penalty', () => {
     const result = computeGlobalScore(PIONS_BROKEN, PIONS_BROKEN, EMPTY_TI, EMPTY_TI, 'Control Possession', 'top')
     expect(result.dimensions.defense.score).toBeLessThan(6)
     expect(result.dimensions.defense.issues.length).toBeGreaterThan(0)
   })
 
-  it('une formation correcte a un score supérieur à une formation brisée', () => {
+  it('a correct formation scores higher than a broken one', () => {
     const good    = computeGlobalScore(PIONS_433, PIONS_433, EMPTY_TI, EMPTY_TI, 'Control Possession', 'top')
     const broken  = computeGlobalScore(PIONS_BROKEN, PIONS_BROKEN, EMPTY_TI, EMPTY_TI, 'Control Possession', 'top')
     expect(good.global).toBeGreaterThan(broken.global)
@@ -98,8 +98,12 @@ describe('computeGlobalScore', () => {
 })
 
 // ── Tests par dimension ───────────────────────────────────────────────────
-describe('Dimension : défense', () => {
-  it('duo Stopping + Covering CB est valorisé', () => {
+describe('Dimension: defence', () => {
+  it('2 CBs with FBs produce a valid defence', () => {
+    // NOTE: stopper/cover synergy was removed from the v3 engine —
+    // it was based on FMScout lessons (old FM system with duties),
+    // not applicable to FM26 IP/OOP.
+    // Instead we verify that the standard central defence is correctly detected.
     const pions = [
       makePion('GK',  'Goalkeeper',     'Goalkeeper'),
       makePion('CDL', 'Centre-Back',    'Stopping CB'),
@@ -109,12 +113,14 @@ describe('Dimension : défense', () => {
       ...PIONS_433.slice(5),
     ]
     const result = computeGlobalScore(pions, pions, EMPTY_TI, EMPTY_TI, 'Control Possession', 'top')
-    const hasStopCover = result.dimensions.defense.strengths
-      .some(s => s.toLowerCase().includes('stopper') || s.toLowerCase().includes('couvrant'))
-    expect(hasStopCover).toBe(true)
+    // Correct defence score + flank coverage detected
+    expect(result.dimensions.defense.score).toBeGreaterThanOrEqual(6)
+    const hasCoverage = result.dimensions.defense.strengths
+      .some(s => s.toLowerCase().includes('flank') || s.toLowerCase().includes('cb'))
+    expect(hasCoverage).toBe(true)
   })
 
-  it('absence de FB/WB génère un problème de couverture latérale', () => {
+  it('absence of FB/WB generates a wide coverage issue', () => {
     const noFlanks = [
       makePion('GK',  'Goalkeeper',  'Goalkeeper'),
       makePion('CDL', 'Centre-Back', 'Covering CB'),
@@ -133,8 +139,8 @@ describe('Dimension : défense', () => {
   })
 })
 
-describe('Dimension : synergies', () => {
-  it('DLP + B2B génère une synergie positive', () => {
+describe('Dimension: synergies', () => {
+  it('DLP + B2B generates a positive synergy', () => {
     const pions = [
       makePion('GK',  'Goalkeeper',           'Goalkeeper'),
       makePion('FBL', 'Full Back',            'Holding FB'),
@@ -154,7 +160,7 @@ describe('Dimension : synergies', () => {
     expect(hasDLPB2B).toBe(true)
   })
 
-  it('deux Free Role génèrent un conflit critique', () => {
+  it('two Free Roles generate a critical conflict', () => {
     const pions = [
       makePion('GK',   'Goalkeeper',  'Goalkeeper'),
       makePion('CDL',  'Centre-Back', 'Covering CB'),
@@ -170,33 +176,33 @@ describe('Dimension : synergies', () => {
     ]
     const result = computeGlobalScore(pions, pions, EMPTY_TI, EMPTY_TI, 'Control Possession', 'top')
     const hasFreeRoleConflict = result.allIssues.some(i =>
-      i.toLowerCase().includes('free role') || i.toLowerCase().includes('déstructuration')
+      i.toLowerCase().includes('free role') || i.toLowerCase().includes('disorganisation')
     )
     expect(hasFreeRoleConflict).toBe(true)
     expect(result.dimensions.synergies.score).toBeLessThan(8)
   })
 })
 
-describe('Dimension : profil', () => {
-  it('Underdog + Tiki-Taka génère une pénalité de profil', () => {
+describe('Dimension: profile', () => {
+  it('Underdog + Tiki-Taka generates a profile penalty', () => {
     const resultUnderdog = computeGlobalScore(PIONS_433, PIONS_433, EMPTY_TI, EMPTY_TI, 'Tiki-Taka', 'underdog')
     const resultElite    = computeGlobalScore(PIONS_433, PIONS_433, EMPTY_TI, EMPTY_TI, 'Tiki-Taka', 'elite')
     expect(resultUnderdog.dimensions.profile.score).toBeLessThan(resultElite.dimensions.profile.score)
   })
 
-  it('Elite + Park the Bus produit des issues de profil', () => {
+  it('Elite + Park the Bus produces profile issues', () => {
     const result = computeGlobalScore(PIONS_433, PIONS_433, EMPTY_TI, EMPTY_TI, 'Park the Bus', 'elite')
     expect(result.dimensions.profile.issues.length).toBeGreaterThan(0)
   })
 
-  it('Underdog + Park the Bus produit des strengths de profil', () => {
+  it('Underdog + Park the Bus produces profile strengths', () => {
     const result = computeGlobalScore(PIONS_433, PIONS_433, EMPTY_TI, EMPTY_TI, 'Park the Bus', 'underdog')
     expect(result.dimensions.profile.strengths.length).toBeGreaterThan(0)
   })
 })
 
-describe('Dimension : OOP', () => {
-  it('Sweeper Keeper sans ligne haute génère un problème', () => {
+describe('Dimension: OOP', () => {
+  it('Sweeper Keeper without high line generates an issue', () => {
     const tiOOPBad = {
       overview: { defensiveLine: 'Standard', lineEngagement: 'Mid Block' },
     }
@@ -211,7 +217,7 @@ describe('Dimension : OOP', () => {
     expect(hasIssue).toBe(true)
   })
 
-  it('Sweeper Keeper avec ligne haute génère une synergie', () => {
+  it('Sweeper Keeper with high line generates a synergy', () => {
     const tiOOPGood = {
       overview: { defensiveLine: 'Higher', lineEngagement: 'High Press' },
     }
@@ -237,8 +243,8 @@ describe('Dimension : OOP', () => {
 })
 
 // ── Tests des templates de référence ─────────────────────────────────────
-describe('Templates de référence — cohérence des scores', () => {
-  it('chaque template produit un score valide', () => {
+describe('Reference templates — score coherence', () => {
+  it('each template produces a valid score', () => {
     TACTIC_TEMPLATES.forEach(tpl => {
       const result = computeGlobalScore(
         tpl.pionsIP, tpl.pionsOOP,
@@ -250,19 +256,19 @@ describe('Templates de référence — cohérence des scores', () => {
     })
   })
 
-  it('Barcelone 2009 a un score supérieur à 7.0', () => {
+  it('Barcelona 2009 scores above 7.0', () => {
     const tpl = TACTIC_TEMPLATES.find(t => t.id === 'barca_2009')
     const result = computeGlobalScore(tpl.pionsIP, tpl.pionsOOP, tpl.ti.ip, tpl.ti.oop, tpl.style, tpl.teamProfile)
     expect(result.global).toBeGreaterThan(7.0)
   })
 
-  it('Atletico 2014 a un score supérieur à 6.5', () => {
+  it('Atletico 2014 scores above 6.5', () => {
     const tpl = TACTIC_TEMPLATES.find(t => t.id === 'atletico_2014')
     const result = computeGlobalScore(tpl.pionsIP, tpl.pionsOOP, tpl.ti.ip, tpl.ti.oop, tpl.style, tpl.teamProfile)
     expect(result.global).toBeGreaterThan(6.5)
   })
 
-  it('Elite templates scorent plus haut que leur équivalent Underdog', () => {
+  it('Elite templates score higher than their Underdog equivalent', () => {
     const barca     = TACTIC_TEMPLATES.find(t => t.id === 'barca_2009')
     const parkBus   = TACTIC_TEMPLATES.find(t => t.id === 'underdog_bus')
     const scoreBarca   = computeGlobalScore(barca.pionsIP, barca.pionsOOP, barca.ti.ip, barca.ti.oop, barca.style, barca.teamProfile)
@@ -275,7 +281,7 @@ describe('Templates de référence — cohérence des scores', () => {
     expect(scoreBarca.global).toBeGreaterThan(6.0)
   })
 
-  it('Park the Bus Underdog score plus haut que Barca en Underdog (style inadapté)', () => {
+  it('Park the Bus Underdog scores higher than Barca as Underdog (unsuited style)', () => {
     const barca   = TACTIC_TEMPLATES.find(t => t.id === 'barca_2009')
     const parkBus = TACTIC_TEMPLATES.find(t => t.id === 'underdog_bus')
     const barcaAsUnderdog = computeGlobalScore(barca.pionsIP, barca.pionsOOP, barca.ti.ip, barca.ti.oop, barca.style, 'underdog')
@@ -286,14 +292,14 @@ describe('Templates de référence — cohérence des scores', () => {
 
 // ── Tests de generateRecommendations ─────────────────────────────────────
 describe('generateRecommendations', () => {
-  it('retourne un tableau de recommandations non vide', () => {
+  it('returns a non-empty recommendations array', () => {
     const result = computeGlobalScore(PIONS_433, PIONS_433, EMPTY_TI, EMPTY_TI, 'Control Possession', 'top')
     const recs = generateRecommendations(result, PIONS_433, PIONS_433, EMPTY_TI, 'Control Possession', 'top')
     expect(Array.isArray(recs)).toBe(true)
     expect(recs.length).toBeGreaterThan(0)
   })
 
-  it('chaque recommandation a type et text', () => {
+  it('each recommendation has type and text', () => {
     const result = computeGlobalScore(PIONS_433, PIONS_433, EMPTY_TI, EMPTY_TI, 'Control Possession', 'top')
     const recs = generateRecommendations(result, PIONS_433, PIONS_433, EMPTY_TI, 'Control Possession', 'top')
     recs.forEach(r => {
@@ -303,7 +309,7 @@ describe('generateRecommendations', () => {
     })
   })
 
-  it('un score >= 8.5 produit une recommandation de type success', () => {
+  it('a score >= 8.5 produces a success recommendation', () => {
     // Score élevé simulé manuellement
     const fakeResult = {
       global: 9.0,
